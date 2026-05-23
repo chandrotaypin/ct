@@ -24,14 +24,8 @@ from flask import Flask, request, jsonify, send_from_directory
 app = Flask(__name__)
 
 # Allow cross-origin requests
-try:
-    from flask_cors import CORS
-    CORS(app)
-except ImportError:
-    pass
-
-# Root of the project (one level above /api/)
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from flask_cors import CORS
+CORS(app)
 
 
 
@@ -264,7 +258,7 @@ def calculate():
 
     return jsonify(payload)
 
-app = app
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
