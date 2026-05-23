@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Composite Trapezoidal Rule — NM Calculator</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheet — served by Flask from /css/ -->
+  <link rel="stylesheet" href="/css/trapezoidal.css" />
+
+  <!-- MathJax -->
+  <script>
+    MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+      options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ── NAV ── -->
+  <nav>
+    <a href="#" class="nav-brand">NM · Calculator</a>
+    <ul class="nav-tabs">
+      <li><a href="#discussion" class="active">Discussion</a></li>
+      <li><a href="#examples">Examples</a></li>
+      <li><a href="#calculator">Calculator</a></li>
+    </ul>
+    <span class="nav-badge">Topic #29</span>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-grid"></div>
+    <p class="hero-eyebrow">Numerical Integration</p>
+    <h1>Composite<br><span>Trapezoidal Rule</span></h1>
+    <p class="hero-desc">
+      A fundamental technique for numerical integration that approximates a definite integral
+      by partitioning the interval into subintervals and applying the trapezoidal rule to each.
+    </p>
+    <div class="hero-tags">
+      <span class="tag gold">Numerical Integration</span>
+      <span class="tag">O(h²) Local Error</span>
+      <span class="tag">O(h⁴) Composite Error</span>
+      <span class="tag">Closed Newton–Cotes</span>
+    </div>
+  </section>
+
+  <!-- ── MAIN ── -->
+  <main>
+
+    <!-- ════ DISCUSSION ════ -->
+    <section id="discussion" class="card">
+      <div class="card-header">
+        <div class="card-icon">∫</div>
+        <span class="card-title">Mathematical Discussion</span>
+        <span class="card-subtitle">Theory & Formula</span>
+      </div>
+      <div class="card-body discussion">
+
+        <p>
+          The <strong>Composite Trapezoidal Rule</strong> estimates the definite integral
+          $\int_a^b f(x)\,dx$ by subdividing $[a,b]$ into $n$ equal subintervals of width
+          $h = \tfrac{b-a}{n}$, then approximating the area under each subinterval as
+          a trapezoid.
+        </p>
+
+        <div class="formula-box">
+          <div class="formula-label">Master Formula</div>
+          $$\int_a^b f(x)\,dx \;\approx\; \frac{h}{2}\Bigl[f(x_0) + 2\sum_{i=1}^{n-1}f(x_i) + f(x_n)\Bigr]$$
+        </div>
+
+        <p>
+          where $x_i = a + i\,h$ for $i = 0, 1, \ldots, n$ and $h = \dfrac{b-a}{n}$.
+          The endpoints $f(x_0)$ and $f(x_n)$ appear with coefficient 1, while all
+          interior nodes $f(x_1), \ldots, f(x_{n-1})$ appear with coefficient 2.
+        </p>
+
+        <div class="formula-grid">
+          <div class="formula-mini">
+            <div class="label">Step Size</div>
+            $$h = \frac{b - a}{n}$$
+          </div>
+          <div class="formula-mini">
+            <div class="label">Truncation Error Bound</div>
+            $$|E_T| \leq \frac{(b-a)^3}{12n^2}\,\max_{a \le \xi \le b}|f''(\xi)|$$
+          </div>
+        </div>
+
+        <p>
+          The <strong>error</strong> of the composite rule is $O(h^2)$: doubling the number
+          of subintervals $n$ reduces the error by a factor of four. This makes the method
+          both simple to implement and convergent for any integrable function — continuous
+          functions are guaranteed to converge as $n \to \infty$.
+        </p>
+
+        <div class="info-row">
+          <span class="info-pill">Order of accuracy: 2nd order in $h$</span>
+          <span class="info-pill">Function evaluations: $n + 1$</span>
+          <span class="info-pill">Converges for any Riemann-integrable $f$</span>
+          <span class="info-pill">Best for smooth functions</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════ EXAMPLES ════ -->
+    <section id="examples" class="card">
+      <div class="card-header">
+        <div class="card-icon">✎</div>
+        <span class="card-title">Worked Examples</span>
+        <span class="card-subtitle">Step-by-step solutions</span>
+      </div>
+      <div class="card-body">
+        <div class="examples-grid">
+
+          <!-- ── Example 1 ── -->
+          <div class="example-card">
+            <div class="example-header">
+              <div class="example-num">1</div>
+              <span class="example-title">
+                Integrate $f(x) = x^2$ on $[0,\,1]$ with $n = 4$
+              </span>
+            </div>
+            <div class="example-body">
+              <div class="steps">
+
+                <div class="step">
+                  <div class="step-num">1</div>
+                  <div class="step-content">
+                    <div class="step-label">Identify Parameters</div>
+                    <p>$a = 0,\; b = 1,\; n = 4$. The exact value is $\int_0^1 x^2\,dx = \tfrac{1}{3} \approx 0.33333$.</p>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">2</div>
+                  <div class="step-content">
+                    <div class="step-label">Compute Step Size</div>
+                    <div class="step-math">$$h = \frac{b-a}{n} = \frac{1-0}{4} = 0.25$$</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">3</div>
+                  <div class="step-content">
+                    <div class="step-label">Evaluate $f$ at Nodes</div>
+                    <table class="sum-table">
+                      <thead>
+                        <tr>
+                          <th>$i$</th><th>$x_i$</th><th>$f(x_i) = x_i^2$</th><th>Weight</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>0</td><td>0.00</td><td>0.0000</td><td>1</td></tr>
+                        <tr><td>1</td><td>0.25</td><td>0.0625</td><td>2</td></tr>
+                        <tr><td>2</td><td>0.50</td><td>0.2500</td><td>2</td></tr>
+                        <tr><td>3</td><td>0.75</td><td>0.5625</td><td>2</td></tr>
+                        <tr><td>4</td><td>1.00</td><td>1.0000</td><td>1</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">4</div>
+                  <div class="step-content">
+                    <div class="step-label">Apply the Formula</div>
+                    <div class="step-math">
+                      $$T \;=\; \frac{h}{2}\bigl[f_0 + 2(f_1+f_2+f_3) + f_4\bigr]$$
+                      $$= \frac{0.25}{2}\bigl[0 + 2(0.0625 + 0.25 + 0.5625) + 1\bigr]$$
+                      $$= 0.125\bigl[0 + 2(0.875) + 1\bigr]$$
+                      $$= 0.125 \times 2.75 = 0.34375$$
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">5</div>
+                  <div class="step-content">
+                    <div class="step-label">Error Analysis</div>
+                    <div class="step-math">
+                      $$|E_T| = \left|\frac{1}{3} - 0.34375\right| = 0.01042$$
+                      $$\text{Bound: } \frac{(1-0)^3}{12 \cdot 4^2}\max|f''| = \frac{1}{192} \cdot 2 = 0.01042$$
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="result-banner">
+                <span class="icon">✓</span>
+                <div>
+                  <div class="val">T ≈ 0.34375</div>
+                  <div class="lbl">Exact: 0.33333 &nbsp;|&nbsp; Absolute error: 0.01042</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Example 2 ── -->
+          <div class="example-card">
+            <div class="example-header">
+              <div class="example-num">2</div>
+              <span class="example-title">
+                Integrate $f(x) = e^x$ on $[0,\,2]$ with $n = 6$
+              </span>
+            </div>
+            <div class="example-body">
+              <div class="steps">
+
+                <div class="step">
+                  <div class="step-num">1</div>
+                  <div class="step-content">
+                    <div class="step-label">Identify Parameters</div>
+                    <p>$a = 0,\; b = 2,\; n = 6$. Exact: $\int_0^2 e^x\,dx = e^2 - 1 \approx 6.38906$.</p>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">2</div>
+                  <div class="step-content">
+                    <div class="step-label">Compute Step Size</div>
+                    <div class="step-math">$$h = \frac{2-0}{6} = \frac{1}{3} \approx 0.33333$$</div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">3</div>
+                  <div class="step-content">
+                    <div class="step-label">Evaluate $f$ at Nodes</div>
+                    <table class="sum-table">
+                      <thead>
+                        <tr><th>$i$</th><th>$x_i$</th><th>$f(x_i) = e^{x_i}$</th><th>Weight</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>0</td><td>0.0000</td><td>1.00000</td><td>1</td></tr>
+                        <tr><td>1</td><td>0.3333</td><td>1.39561</td><td>2</td></tr>
+                        <tr><td>2</td><td>0.6667</td><td>1.94773</td><td>2</td></tr>
+                        <tr><td>3</td><td>1.0000</td><td>2.71828</td><td>2</td></tr>
+                        <tr><td>4</td><td>1.3333</td><td>3.79367</td><td>2</td></tr>
+                        <tr><td>5</td><td>1.6667</td><td>5.29449</td><td>2</td></tr>
+                        <tr><td>6</td><td>2.0000</td><td>7.38906</td><td>1</td></tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">4</div>
+                  <div class="step-content">
+                    <div class="step-label">Apply the Formula</div>
+                    <div class="step-math">
+                      $$T = \frac{h}{2}\bigl[f_0 + 2(f_1+f_2+f_3+f_4+f_5) + f_6\bigr]$$
+                      $$\text{Interior sum} = 1.39561+1.94773+2.71828+3.79367+5.29449 = 15.14978$$
+                      $$T = \frac{0.33333}{2}\bigl[1 + 2(15.14978) + 7.38906\bigr]$$
+                      $$= 0.16667 \times 38.73862 \approx 6.45641$$
+                    </div>
+                  </div>
+                </div>
+
+                <div class="step">
+                  <div class="step-num">5</div>
+                  <div class="step-content">
+                    <div class="step-label">Error Analysis</div>
+                    <div class="step-math">
+                      $$|E_T| = |6.38906 - 6.45641| = 0.06735$$
+                      $$\text{Bound: } \frac{(2)^3}{12 \cdot 36}\max|e^x| = \frac{8}{432} \cdot e^2 \approx 0.13975$$
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="result-banner">
+                <span class="icon">✓</span>
+                <div>
+                  <div class="val">T ≈ 6.45641</div>
+                  <div class="lbl">Exact: 6.38906 &nbsp;|&nbsp; Absolute error: 0.06735</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════ CALCULATOR ════ -->
+    <section id="calculator" class="card">
+      <div class="card-header">
+        <div class="card-icon">⌁</div>
+        <span class="card-title">Interactive Calculator</span>
+        <span class="card-subtitle">Live computation</span>
+      </div>
+      <div class="card-body">
+        <div class="calc-body">
+
+          <!-- Input Panel -->
+          <div class="calc-panel">
+
+            <div class="field-group">
+              <label>
+                Function &nbsp; $f(x)$
+                <span class="hint">Use Python syntax</span>
+              </label>
+              <input
+                type="text"
+                id="func-input"
+                placeholder="e.g.  x**2  or  exp(x)"
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+
+            <div class="n-row">
+              <div class="field-group">
+                <label>Lower Bound &nbsp; $a$</label>
+                <input type="number" id="lower-bound" placeholder="0" step="any" />
+              </div>
+              <div class="field-group">
+                <label>Upper Bound &nbsp; $b$</label>
+                <input type="number" id="upper-bound" placeholder="1" step="any" />
+              </div>
+            </div>
+
+            <div class="field-group">
+              <label>
+                Subintervals &nbsp; $n$
+                <span class="hint">Even integer ≥ 2</span>
+              </label>
+              <input type="number" id="n-input" placeholder="4" min="2" step="2" />
+            </div>
+
+            <div class="field-group">
+              <label>
+                Exact Value &nbsp; <em>(optional)</em>
+                <span class="hint">For error comparison</span>
+              </label>
+              <input type="number" id="exact-val" placeholder="Leave blank if unknown" step="any" />
+            </div>
+
+            <div class="divider"></div>
+
+            <button class="btn-calc" id="calc-btn" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              Calculate Integral
+            </button>
+
+          </div><!-- /calc-panel -->
+
+          <!-- Output Panel -->
+          <div class="output-panel">
+
+            <div class="output-box empty" id="result-box">
+              <div class="out-label">Approximate Integral</div>
+              <div class="out-value" id="result-value">—</div>
+              <div class="out-sub" id="result-sub">Enter parameters and press Calculate</div>
+            </div>
+
+            <div class="error-row">
+              <div class="error-chip">
+                <div class="ec-label">Step size &nbsp; $h$</div>
+                <div class="ec-val" id="out-h">—</div>
+              </div>
+              <div class="error-chip">
+                <div class="ec-label">Absolute Error</div>
+                <div class="ec-val" id="out-err">—</div>
+              </div>
+            </div>
+
+            <div class="steps-output">
+              <div class="steps-output-header" id="steps-toggle">
+                <span>Step-by-step breakdown</span>
+                <span class="chevron">▼</span>
+              </div>
+              <div class="steps-output-body" id="steps-body">
+                <span class="placeholder">Steps will appear here after calculation.</span>
+              </div>
+            </div>
+
+          </div><!-- /output-panel -->
+
+        </div><!-- /calc-body -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <span>PIT Finals 2026 &nbsp;·&nbsp; <strong>Composite Trapezoidal Rule</strong> &nbsp;·&nbsp; Topic #29</span>
+    <span>Numerical Methods Online Calculator &nbsp;·&nbsp; Flask + Python</span>
+  </footer>
+
+</div><!-- /page-wrap -->
+
+<!-- JS — served by Flask from /js/ -->
+<script src="/js/script.js" defer></script>
+
+<!-- Inline scroll-spy -->
+<script>
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks  = document.querySelectorAll('.nav-tabs a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`.nav-tabs a[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4 });
+
+  sections.forEach(s => observer.observe(s));
+
+  document.getElementById('steps-toggle').addEventListener('click', () => {
+    const body    = document.getElementById('steps-body');
+    const chevron = document.querySelector('.chevron');
+    const hidden  = body.style.display === 'none';
+    body.style.display = hidden ? 'block' : 'none';
+    chevron.style.transform = hidden ? 'rotate(0deg)' : 'rotate(-90deg)';
+  });
+</script>
+
+</body>
+</html>
