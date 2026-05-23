@@ -1,4 +1,9 @@
 {
+  "functions": {
+    "api/index.py": {
+      "runtime": "python3.9"
+    }
+  },
   "rewrites": [
     { "source": "/calculate", "destination": "/api/index" },
     { "source": "/",          "destination": "/html/trapezoidal.html" },
