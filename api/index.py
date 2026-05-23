@@ -34,27 +34,7 @@ except ImportError:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  STATIC FILE ROUTES
-# ═══════════════════════════════════════════════════════════════════════════════
 
-@app.route("/")
-def index():
-    """Serve the main HTML page."""
-    return send_from_directory(os.path.join(ROOT, "html"), "trapezoidal.html")
-
-@app.route("/css/<path:filename>")
-def css_files(filename):
-    return send_from_directory(os.path.join(ROOT, "css"), filename)
-
-@app.route("/js/<path:filename>")
-def js_files(filename):
-    return send_from_directory(os.path.join(ROOT, "js"), filename)
-
-
-# ═══════════════════════════════════════════════════════════════════════════════
-#  SAFE EXPRESSION EVALUATOR
-# ═══════════════════════════════════════════════════════════════════════════════
 
 _SAFE_NAMES = {
     # constants
@@ -110,13 +90,13 @@ def _preprocess(expr: str) -> str:
       e^x       →  exp(x)   (only bare e^ pattern)
       ^         →  **
     """
-    # sin^2(x) / cos^2(x) / tan^2(x) etc.  →  sin(x)**2
+    # trigo
     expr = re.sub(
         r'(sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|sqrt|log|exp)\^(\d+)\(',
         r'\1(\2(',   # placeholder — handled below
         expr
     )
-    # Better approach: trig^n(arg) → trig(arg)**n
+    # Better approach
     expr = re.sub(
         r'(sin|cos|tan|asin|acos|atan|sinh|cosh|tanh|sqrt|log|exp)\^(\d+)\(([^)]*)\)',
         r'\1(\3)**\2',
@@ -139,11 +119,7 @@ def evaluate(expr: str, x: float) -> float:
     namespace = {**_SAFE_NAMES, "x": x, "__builtins__": {}}
     return float(eval(expr, namespace))  # noqa: S307
 
-
-# ═══════════════════════════════════════════════════════════════════════════════
-#  COMPOSITE TRAPEZOIDAL RULE
-# ═══════════════════════════════════════════════════════════════════════════════
-
+#COMPOSITE RULE
 def composite_trapezoidal(func_expr: str, a: float, b: float, n: int) -> dict:
     """
     Approximate ∫[a,b] f(x) dx using the Composite Trapezoidal Rule.
@@ -288,12 +264,6 @@ def calculate():
 
     return jsonify(payload)
 
-
-# ═══════════════════════════════════════════════════════════════════════════════
-#  VERCEL ENTRY POINT
-#  Vercel looks for a variable named `app` in api/index.py automatically.
-#  The if __name__ == "__main__" block is only used for local development.
-# ═══════════════════════════════════════════════════════════════════════════════
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

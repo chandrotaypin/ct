@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/css/(.*)", "destination": "/css/$1" },
-    { "source": "/js/(.*)",  "destination": "/js/$1"  },
-    { "source": "/(.*)",     "destination": "/api/index" }
+    { "source": "/calculate", "destination": "/api/index" },
+    { "source": "/",          "destination": "/html/trapezoidal.html" },
+    { "source": "/(.*)",      "destination": "/$1" }
   ]
 }
