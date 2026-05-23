@@ -561,7 +561,7 @@ body {
   min-height: 100px;
   transition: border-color .25s;
 }
-.out-main.has-val { border-color: var(--accent-bdr); }
+.out-main.has-val { border-color: #2dd4d4; background: var(--s3); }
 
 .out-tag {
   font-family: var(--mono);
@@ -575,9 +575,9 @@ body {
 
 .out-num {
   font-family: var(--mono);
-  font-size: 1.9rem;
-  font-weight: 500;
-  color: #2dd4d4;
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ffffff;
   line-height: 1.1;
   letter-spacing: -.01em;
 }
