@@ -3,24 +3,24 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --accent:     #d4924a;
-  --accent-dim: rgba(212,146,74,.12);
-  --accent-bdr: rgba(212,146,74,.28);
+  --accent:     #4ec9c9;
+  --accent-dim: rgba(78,201,201,.10);
+  --accent-bdr: rgba(78,201,201,.22);
 
-  --bg:    #1a1510;
-  --s1:    #201a13;
-  --s2:    #271f16;
-  --s3:    #2f261b;
+  --bg:    #14181e;
+  --s1:    #1a1f27;
+  --s2:    #1f2530;
+  --s3:    #252c38;
 
-  --bdr:   rgba(255,220,160,.06);
-  --bdr2:  rgba(255,220,160,.11);
+  --bdr:   rgba(255,255,255,.07);
+  --bdr2:  rgba(255,255,255,.12);
 
-  --t1:    #f0e6d3;
-  --t2:    #a0896e;
-  --t3:    #5c4a35;
+  --t1:    #e4eaf2;
+  --t2:    #8496aa;
+  --t3:    #4a5a6a;
 
-  --ok:    #c8a850;
-  --ok-a:  rgba(200,168,80,.08);
+  --ok:    #50d9a0;
+  --ok-a:  rgba(80,217,160,.08);
 
   --sans:  'Inter', system-ui, sans-serif;
   --mono:  'JetBrains Mono', monospace;
@@ -431,15 +431,15 @@ body {
   margin-top: 1.25rem;
   padding: .8rem 1rem;
   background: var(--ok-a);
-  border: 1px solid rgba(200,168,80,.22);
+  border: 1px solid rgba(80,217,160,.18);
   border-radius: var(--r-sm);
 }
 
 .res-tick {
   width: 26px; height: 26px;
   border-radius: 50%;
-  background: rgba(200,168,80,.1);
-  border: 1px solid rgba(200,168,80,.25);
+  background: rgba(80,217,160,.1);
+  border: 1px solid rgba(80,217,160,.22);
   display: flex; align-items: center; justify-content: center;
   font-size: 0.75rem;
   color: var(--ok);
@@ -534,7 +534,7 @@ body {
   width: 100%;
   padding: .72rem 1.1rem;
   background: var(--accent);
-  color: #1a1208;
+  color: #0e1a1a;
   border: none;
   border-radius: var(--r-sm);
   font-family: var(--sans);
@@ -561,7 +561,7 @@ body {
   min-height: 100px;
   transition: border-color .25s;
 }
-.out-main.has-val { border-color: var(--accent-bdr); background: var(--s3); }
+.out-main.has-val { border-color: #2dd4d4; background: var(--s3); }
 
 .out-tag {
   font-family: var(--mono);
@@ -577,11 +577,11 @@ body {
   font-family: var(--mono);
   font-size: 2rem;
   font-weight: 600;
-  color: #f5deb3;
+  color: #ffffff;
   line-height: 1.1;
   letter-spacing: -.01em;
 }
-.out-empty .out-num { color: var(--s3); font-size: 1.4rem; }
+.out-empty .out-num { color: var(--t1); font-size: 1.4rem; }
 
 .out-hint {
   font-size: 0.72rem;
